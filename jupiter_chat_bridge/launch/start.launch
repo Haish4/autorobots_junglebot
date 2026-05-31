@@ -1,0 +1,36 @@
+<launch>
+
+  <!-- USB Camera (headless, no image_view) -->
+  <node name="usb_cam" pkg="usb_cam" type="usb_cam_node" output="screen">
+    <param name="video_device"    value="/dev/video0" />
+    <param name="image_width"     value="640" />
+    <param name="image_height"    value="480" />
+    <param name="pixel_format"    value="mjpeg" />
+    <param name="framerate"       value="5" />
+    <param name="color_format"    value="yuv422p" />
+    <param name="camera_frame_id" value="usb_cam" />
+    <param name="io_method"       value="mmap" />
+  </node>
+
+  <!-- Vision Intent Classifier + Vision API -->
+  <node name="vision_intent_node" pkg="jupiter_chat_bridge"
+        type="vision_intent_node.py" output="screen" />
+
+  <!-- Chat Bridge (GPT text conversation) -->
+  <node name="chat_bridge_node" pkg="jupiter_chat_bridge"
+        type="chat_bridge_node.py" output="screen" />
+
+  <!-- Google Speech Recognition -->
+  <node name="google_sr" pkg="jupiter_chat_bridge"
+        type="google_sr.py" output="screen" />
+
+  <!-- Google Text-to-Speech -->
+  <node name="google_tts" pkg="jupiter_chat_bridge"
+        type="google_tts.py" output="screen" />
+
+  <!-- Robot Dashboard GUI -->
+  <node name="robot_dashboard" pkg="jupiter_chat_bridge"
+        type="robot_dashboard.py" output="screen"
+        launch-prefix="bash -c 'DISPLAY=:0 $0 $@'" />
+
+</launch>
